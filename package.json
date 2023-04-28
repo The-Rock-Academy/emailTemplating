@@ -1,0 +1,11 @@
+{
+  "name": "emailtemplating",
+  "version": "1.0.0",
+  "description": "Function to help with creating emails from templates and sending them with attachments using google app script.",
+  "main": "emailer.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Thompson",
+  "license": "ISC"
+}
