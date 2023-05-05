@@ -11,17 +11,17 @@ class Emailer {
      * @param email string[] of email addresses
      * @param data An object containing the data to be rendered
      * @param attachments A string[] of file ids to be attached to the email. These are assumed to be google docs and will be rendered into pdfs.
+     * @param attachments_pdf A GoogleAppsScript.Base.Blob[] of pdfs to be attached to the email.
      */
-    public sendEmail(emails: string[], data, attachments: string[]) {
+    public sendEmail(emails: string[], data, attachments: string[], attachments_pdf: GoogleAppsScript.Base.Blob[]=[]) {
         let rendered_email = this.template.render_email(data);
-        
-        let pdf_attachments: GoogleAppsScript.Base.Blob[] = [];
-
         if (attachments.length > 0) {
-            pdf_attachments = this.getAttachments(attachments);
+            attachments_pdf = attachments_pdf.concat(this.getAttachments(attachments));
         }
 
-        GmailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: pdf_attachments });
+        console.log("Going to send email with " + attachments_pdf.length + " attachments")
+
+        GmailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf });
     }
 
     /**
@@ -29,9 +29,9 @@ class Emailer {
      * @param attachments Google drive ids of the files to be attached
      * @returns GoogleAppsScript.Base.Blob[] of pdfs.
      */
-    private getAttachments(attachments: string[]) {
+    private getAttachments(attachments: string[]): GoogleAppsScript.Base.Blob[] {
         return attachments.map((attachment) => {
-            return DriveApp.getFileById(attachment).getAs("applciation/PDF");
+            return DriveApp.getFileById(attachment).getAs("application/PDF");
         });
     }
 }
