@@ -13,7 +13,7 @@ class Emailer {
      * @param attachments A string[] of file ids to be attached to the email. These are assumed to be google docs and will be rendered into pdfs.
      * @param attachments_pdf A GoogleAppsScript.Base.Blob[] of pdfs to be attached to the email.
      */
-    public sendEmail(emails: string[], data, attachments: string[] = [], attachments_pdf: GoogleAppsScript.Base.Blob[]=[]) {
+    public sendEmail(emails: string[], data, attachments: string[] = [], attachments_pdf: GoogleAppsScript.Base.Blob[]=[], replyTo: string = "") {
         let rendered_email = this.template.render_email(data);
         if (attachments.length > 0) {
             attachments_pdf = attachments_pdf.concat(this.getAttachments(attachments));
@@ -21,7 +21,11 @@ class Emailer {
 
         console.log("Going to send email with " + attachments_pdf.length + " attachments")
 
-        GmailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf });
+        if (replyTo != "") {
+            GmailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf, replyTo: replyTo });
+        } else {
+            GmailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf });
+        }
     }
 
     /**
