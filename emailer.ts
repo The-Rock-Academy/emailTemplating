@@ -1,8 +1,11 @@
 class Emailer {
-    private template: Templater;
+    private renderer: Renderer;
+    private template: Template;
 
-    constructor(subject_template: string, body_template: string) {
-        this.template = new Templater(subject_template, body_template);
+    constructor(templateSS, templateName: string, template_type: string="default") {
+        this.template = (new TemplateSpreadsheet(templateSS)).getTemplate(templateName, template_type);
+        console.log("Got template: " + JSON.stringify(this.template));
+        this.renderer = new Renderer(this.template.subject, this.template.body);
     }
 
 
@@ -13,10 +16,10 @@ class Emailer {
      * @param attachments A string[] of file ids to be attached to the email. These are assumed to be google docs and will be rendered into pdfs.
      * @param attachments_pdf A GoogleAppsScript.Base.Blob[] of pdfs to be attached to the email.
      */
-    public sendEmail(emails: string[], data, attachments: string[] = [], attachments_pdf: GoogleAppsScript.Base.Blob[]=[], replyTo: string = "") {
-        let rendered_email = this.template.render_email(data);
-        if (attachments.length > 0) {
-            attachments_pdf = attachments_pdf.concat(this.getAttachments(attachments));
+    public sendEmail(emails: string[], data, attachments_pdf: GoogleAppsScript.Base.Blob[]=[], replyTo: string = "") {
+        let rendered_email = this.renderer.render_email(data);
+        if (this.template.attachments.length > 0) {
+            attachments_pdf = attachments_pdf.concat(this.getAttachments(this.template.attachments));
         }
 
         console.log("Going to send email with " + attachments_pdf.length + " attachments")
