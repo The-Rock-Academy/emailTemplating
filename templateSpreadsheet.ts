@@ -29,7 +29,6 @@ class TemplateSpreadsheet {
 
         // find column of template type
         let templateTypeColumn = templateSheet.getRange(1, 1, 1, templateSheet.getLastColumn()).getValues()[0].indexOf(template_type) + 1;
-        console.log("Found templateTypeColumn: " + templateTypeColumn);
         // Get attachments
         let attachments: string[] = [];
         if (templateSheet.getLastRow() < 4) {
@@ -39,7 +38,8 @@ class TemplateSpreadsheet {
             //Loop through all cells in attachments range and add them to attachments array
             if (attachmentsRange.length > 0) {
                 attachments = attachmentsRange.map((row) => {
-                    row[0] 
+                    console.log("Found attachment: " + row[0]);
+                    return row[0] 
                 }).filter((attachment) => attachment != "");
             }
         }

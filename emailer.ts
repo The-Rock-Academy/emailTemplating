@@ -22,7 +22,7 @@ class Emailer {
             attachments_pdf = attachments_pdf.concat(this.getAttachments(this.template.attachments));
         }
 
-        console.log("Going to send email with " + attachments_pdf.length + " attachments")
+        console.log("Going to send email to " + emails + " with " + attachments_pdf.length + " attachments")
 
         if (replyTo != "") {
             GmailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf, replyTo: replyTo });
