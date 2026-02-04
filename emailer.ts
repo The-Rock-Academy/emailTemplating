@@ -25,9 +25,9 @@ class Emailer {
         console.log("Going to send email to " + emails + " with " + attachments_pdf.length + " attachments")
 
         if (replyTo != "") {
-            GmailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf, replyTo: replyTo });
+            MailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf, replyTo: replyTo });
         } else {
-            GmailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf });
+            MailApp.sendEmail(emails.join(","), rendered_email[0], rendered_email[1], { attachments: attachments_pdf });
         }
     }
 
