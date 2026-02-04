@@ -1,4 +1,4 @@
-class Templater {
+class Renderer {
     private subject_template: string;
     private body_template: string;
 
